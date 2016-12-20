@@ -1,0 +1,36 @@
+{
+    "__version": "1.1",
+    "__comments": "Sample template to deploy a vCenter Server with an embedded Platform Services Controller to an ESXi host.",
+    "target.vcsa": {
+        "appliance": {
+            "deployment.network": "vss-64",
+            "deployment.option": "tiny",  
+            "name": "cli-vcc",
+            "thin.disk.mode": true
+        },
+        "esx": {
+            "hostname": "192.168.0.56",
+            "username": "root",
+            "password": "nicira123",
+            "datastore": "nsx_lab"
+        },
+        "network": {
+            "hostname": "clivc.rkc.local",
+            "dns.servers": "192.168.0.96",
+            "gateway": "192.168.64.1",
+            "ip": "192.168.64.33",
+            "ip.family": "ipv4",
+            "mode": "static",
+            "prefix": "24"
+        },
+        "os": {
+            "password": "Nicira123$",
+            "ssh.enable": true
+        },
+        "sso": {
+            "password": "Nicira123$",
+            "domain-name": "rkc.local",
+            "site-name": "nsx"
+        }
+    }
+}
