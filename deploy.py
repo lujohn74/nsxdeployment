@@ -131,8 +131,9 @@ class deployment(object):
 	    print "=" * 100
 	    print "the service is not registerred sucessfully" 	
 	    print "=" * 100
-#deployment("embedded_vCSA_on_VC.json").vc_deploy("./VMware-VCSA-all-6.0.0-3343019.iso")
-#deployment("bakvsm.json").vsm_deploy("VMware-NSX-Manager-6.2.4-4292526.ova")
+deployment("embedded_vCSA_on_VC.json").vc_deploy("./VMware-VCSA-all-6.0.0-3343019.iso")
+deployment("bakvsm.json").vsm_deploy("VMware-NSX-Manager-6.2.4-4292526.ova")
+time.sleep(600)
 deployment("bakvsm.json").registration("embedded_vCSA_on_VC.json")
 
 
