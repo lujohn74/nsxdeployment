@@ -1,9 +1,10 @@
 {
+ "_comment":"this file is to provison nsx manager",
 	"vsm":{
 		"vsm_cli_passwd_0":"Nicira123$",
 		"vsm_cli_en_passwd_0":"Nicira123$", 
-		"vsm_hostname":"clinsxmgr", 
-		"vsm_ip_0":"192.168.64.34", 
+		"vsm_hostname":"pvcnsxmgr", 
+		"vsm_ip_0":"192.168.64.86", 
 		"vsm_netmask_0":"255.255.255.0", 
 		"vsm_gateway_0":"192.168.64.1", 
 		"vsm_dns1_0":"192.168.0.96", 

@@ -5,16 +5,16 @@
         "appliance": {
             "deployment.network": "64-0",
             "deployment.option": "tiny",
-            "name": "clivc",
+            "name": "pvc-vc",
             "thin.disk.mode": true
         },
         "network": {
-            "hostname": "clivc.rkc.local",
+            "hostname": "pvc.rkc.local",
             "dns.servers": [
                 "192.168.0.96"
             ],
             "gateway": "192.168.64.1",
-            "ip": "192.168.64.33",
+            "ip": "192.168.64.85",
             "ip.family": "ipv4",
             "mode": "static",
             "prefix": "24"

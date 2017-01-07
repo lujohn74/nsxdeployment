@@ -1,4 +1,4 @@
-import json,os,subprocess,time,ssl,OpenSSL,requests
+import json,os,subprocess,time,ssl,OpenSSL,requests,subprocess
 
 class deployment(object):
     def __init__(self,file):
@@ -18,8 +18,11 @@ class deployment(object):
 	subprocess.call(["mkdir","iso"])
 	subprocess.call(["mount",iso_path,"iso"])
 
+	print "\n"
 	print "*" *100
 	print "The VCSA appliance is starting to deploy"
+        print "\n"
+        print "*" *100
 
 	#deploy vc appliance align with template configuration
 	os.system("%s install --accept-eula %s --verbose %s" %(script_path,template_path,log_dir))
@@ -33,12 +36,18 @@ class deployment(object):
 	with open("vcsa-cli-installer.log") as file:
     	    key = file.read()
     	    if key.find("First time configuration succeeded") != -1:
-       	        print "=" * 100
+       	        print "\n"
+		print "=" * 100
         	print "The VCSA appliance has been sucessfully deployed"
+       		print "\n"
+        	print "=" *100
         	os.system("rm %s/vcsa-cli-installer*" %log_path)
     	    else:
+                print "\n"
          	print "=" * 100
          	print "The deployment may not be sucessful, please review vcsa-cli-installer.log"
+                print "\n"
+                print "=" * 100
 
     def vsm_deploy(self,ova):
 	vsm=self.js['vsm']
@@ -62,8 +71,14 @@ class deployment(object):
 	ntp=vsm["vsm_ntp_0"]
 	sshenable=vsm["vsm_isSSHEnabled"]
 
+        print "\n"
+        print "=" * 100
+        print "The NSX Manager appliance is starting to deploy"
+        print "\n"
+        print "=" *100
+
 	deploy ="""ovftool --X:logFile=log --X:injectOvfEnv --acceptAllEulas --powerOn --noSSLVerify --diskMode=thin \
-	--allowExtraConfig --X:waitForIp --name=clinsxmgr --datastore=nsx_lab --net:VSMgmt=%s \
+	--allowExtraConfig --X:waitForIp --name=pvcnsxmgr --datastore=nsx_lab --net:VSMgmt=%s \
 	--prop:vsm_cli_passwd_0=%s \
 	--prop:vsm_cli_en_passwd_0=%s \
 	--prop:vsm_hostname=%s \
@@ -85,14 +100,18 @@ class deployment(object):
 	with open('log') as file:
    	 extract = file.read()
     	 if extract.find("Ovf convertion finished") != -1:
-       	     print "="*100
+       	     print "\n"
+	     print "="*100
 	     print " The ovf deployment has been done, the VSM is booting up "
              print "="*100
+	     print "\n"
              os.system("rm log")
    	 else:
+	    print "\n"
 	    print "="*100
 	    print "The deplpyment is not completed, check log "
 	    print "="*100
+	    print "\n"
 
     def registration(self,vcsajson):
 	vsm = self.js['vsm']
@@ -124,18 +143,27 @@ class deployment(object):
 
 	conn=requests.put(url,auth=(vsmuser,vsmpasswd),verify=False,data=body,headers=header)
 	if conn.status_code == 200:
+	    print "\n"
 	    print "=" * 100
 	    print "the service has been registerred to vCenter" 
 	    print "=" * 100
+	    print "\n"
 	else: 
+	    print "\n"
 	    print "=" * 100
 	    print "the service is not registerred sucessfully" 	
 	    print "=" * 100
-deployment("embedded_vCSA_on_VC.json").vc_deploy("./VMware-VCSA-all-6.0.0-3343019.iso")
-deployment("bakvsm.json").vsm_deploy("VMware-NSX-Manager-6.2.4-4292526.ova")
+    	    print "\n"
+
+
+def nested_esx():
+    os.system("powershell -Command ./vm-create.ps1")
+
+#deployment("embedded_vCSA_on_VC.json").vc_deploy("../VMware-VCSA-all-6.0.0-3343019.iso")
+deployment("bakvsm.json").vsm_deploy("../VMware-NSX-Manager-6.2.5-4818372.ova")
 time.sleep(600)
 deployment("bakvsm.json").registration("embedded_vCSA_on_VC.json")
-
+nested_esx()
 
 
 
