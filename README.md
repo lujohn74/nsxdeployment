@@ -10,12 +10,14 @@ There are 2 json files that needs to edit
      so just keep it as original
   2) vsm.json : This file is used for NSX Manager deployment, the basic nsx manager and vcenter environment requirment has been placed in file. 
   
+  3) vm-create.ps1: the script of powercli to create nested hypervisor and enable cpu hordware virtualization. the number of nested hypervisor can be configured in script
+
 The deployment source is VCSA ISO and NSX Manager OVA, you need to place the file manually in the folder and update the file name into above 
 json file. 
 
 This script test base in with 
   VCSA : VMware-VCSA-all-6.0.0-3343019.iso
-  NSX Manager : VMware-NSX-Manager-6.2.4-4292526.ova
+  NSX Manager : VMware-NSX-Manager-6.2.5
   
 The function in the script is built under class def functions, you can select the function to deploy VCSA or NSX Manager only, 
 depends on your requriement. The code looks not pretty, but useable in my lab. 
