@@ -4,7 +4,7 @@ The VCSA comsumes the most time for lab building and less flexibility for portgr
 To avoid the hardcode requirement, most variables are feteched from json file. so we only need to edit the json contents 
 before running python script. 
 
-There are 2 json files that needs to edit 
+There are 2 json files 1 powershell file that needs to edit 
 
   1) embedded_vCSA_on_VC.json : This file is used for VCSA deployment. Due to format is not able to change by VCSA installer validation,
      so just keep it as original
