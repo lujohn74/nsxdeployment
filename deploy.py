@@ -1,4 +1,4 @@
-import json,os,subprocess,time,ssl,OpenSSL,requests,subprocess
+import json,os,subprocess,time,ssl,OpenSSL,requests,paramiko,pdb
 
 class deployment(object):
     def __init__(self,file):
@@ -48,6 +48,7 @@ class deployment(object):
          	print "The deployment may not be sucessful, please review vcsa-cli-installer.log"
                 print "\n"
                 print "=" * 100
+		exit()
 
     def vsm_deploy(self,ova):
 	vsm=self.js['vsm']
@@ -112,6 +113,7 @@ class deployment(object):
 	    print "The deplpyment is not completed, check log "
 	    print "="*100
 	    print "\n"
+	    exit()
 
     def registration(self,vcsajson):
 	vsm = self.js['vsm']
@@ -154,18 +156,33 @@ class deployment(object):
 	    print "the service is not registerred sucessfully" 	
 	    print "=" * 100
     	    print "\n"
+	    exit()
 
+def autodeploy(vcsajson):
+    with open(vcsajson) as vc:
+        js=json.load(vc)
+        vcip=js['target.vcsa']['network']['ip']
+        vcpasswd=js['target.vcsa']['os']['password']
+    ssh=paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    # The init root password is same as administrator, just hardcode here to make simple 
+    ssh_conn="ssh.connect('%s',username='root',password='%s')" %(vcip,vcpasswd)
+    exec(ssh_conn)
+    stdin,stdout,stderr=ssh.exec_command("/etc/init.d/vmware-rbd-watchdog start")
+    ssh.close()
 
 def nested_esx():
     os.system("powershell -Command ./vm-create.ps1")
 
-#deployment("embedded_vCSA_on_VC.json").vc_deploy("../VMware-VCSA-all-6.0.0-3343019.iso")
+
+deployment("embedded_vCSA_on_VC.json").vc_deploy("../VMware-VCSA-all-6.0.0-3343019.iso")
 deployment("bakvsm.json").vsm_deploy("../VMware-NSX-Manager-6.2.5-4818372.ova")
 time.sleep(600)
 deployment("bakvsm.json").registration("embedded_vCSA_on_VC.json")
+
+#enable VCSA auto deploy service 
+autodeploy("embedded_vCSA_on_VC.json")
 nested_esx()
-
-
 
 
 
