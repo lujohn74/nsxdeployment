@@ -1,3 +1,4 @@
+$vmhost="192.168.0.56"
 $vcenter="vc.rkc.local"
 $vcuser="administrator@rkc.local"
 $vcpass="Nicira123$"
@@ -22,7 +23,7 @@ Connect-VIServer $vcenter -user $vcuser -password $vcpass
 # create nested vsphere by the while loop
 $i=1
 while($i -le $vm_count) {
-	New-VM -VMHost 192.168.0.56 -Name pvc-esxi$i -Datastore $ds -DiskMB $diskspace -MemoryMB $memory -NumCpu $numcpu -GuestID $guestid -NetworkName $network1,$network2
+	New-VM -VMHost $vmhost -Name pvc-esxi$i -Datastore $ds -DiskMB $diskspace -MemoryMB $memory -NumCpu $numcpu -GuestID $guestid -NetworkName $network1,$network2
 	$i ++
 }
 
