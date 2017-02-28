@@ -2,7 +2,7 @@ import json,os,subprocess,time,ssl,OpenSSL,requests,paramiko,pdb
 
 vc_json="./embedded_vCSA_on_VC.json"
 vsm_json="./bakvsm.json"
-vsphere_iso="../VMware-VCSA-all-6.0.0-3343019.iso"
+vsphere_iso="../VMware-VCSA-all-6.0.0-4637290.iso"
 vsm_ova="../VMware-NSX-Manager-6.2.5-4818372.ova"
 vm_ds="nsx_lab"
 
@@ -189,9 +189,9 @@ def nested_esx():
     os.system("powershell -Command ./vm-create.ps1")
 
 
-#deployment(vc_json).vc_deploy(vsphere_iso)
-#deployment(vsm_json).vsm_deploy(vsm_ova)
-#time.sleep(600)
+deployment(vc_json).vc_deploy(vsphere_iso)
+deployment(vsm_json).vsm_deploy(vsm_ova)
+time.sleep(600)
 deployment(vsm_json).registration(vc_json)
 
 #enable VCSA auto deploy service 

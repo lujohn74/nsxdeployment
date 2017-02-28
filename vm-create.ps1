@@ -2,12 +2,14 @@ $vmhost="192.168.0.56"
 $vcenter="vc.rkc.local"
 $vcuser="administrator@rkc.local"
 $vcpass="Nicira123$"
-$vm_count="4" 
+$vm_count="6" 
 $numcpu="4"
 $diskspace="40960"
 $memory="12288"
 $ds="nsx_lab"
+#guestid="vmkernel65Guest"
 $guestid="vmkernel6Guest"
+
 $network1="64-0"
 $network2="65-0"
 
@@ -23,12 +25,12 @@ Connect-VIServer $vcenter -user $vcuser -password $vcpass
 # create nested vsphere by the while loop
 $i=1
 while($i -le $vm_count) {
-	New-VM -VMHost $vmhost -Name pvc-esxi$i -Datastore $ds -DiskMB $diskspace -MemoryMB $memory -NumCpu $numcpu -GuestID $guestid -NetworkName $network1,$network2
+	New-VM -VMHost $vmhost -Name t-esxi$i -Datastore $ds -DiskMB $diskspace -MemoryMB $memory -NumCpu $numcpu -GuestID $guestid -NetworkName $network1,$network2
 	$i ++
 }
 
 # setup the cpu hardware virtualization functions 
-$vm=Get-VM pvc-esx**
+$vm=Get-VM t-esx**
 $spec=New-Object VMware.Vim.VirtualMachineConfigSpec
 $spec.nestedHVEnabled = $true
 $vm.ExtensionData.ReconfigVM($spec)
